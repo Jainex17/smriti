@@ -1,0 +1,57 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/session_start.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/prompt_context.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/completion_guard.py\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "agent",
+            "prompt": "Act as the harness's silent learning curator. Use only the current task outcome already in context; do not inspect arbitrary files or transcripts. If this was a normal (not private/isolated) session and there is one durable, evidence-backed correction or preference, save ONE concise rule. Use the exact command form `harness-memory remember --scope <personal|repo> --kind <preference|repo-fact|bug-pattern|verification|workflow|decision> --rule <text>`; do not invent `add`, `--type`, `--text`, or other options. Prefer a semantic bug invariant with trigger, root cause, required behavior, and guardrail, not a test inventory. Never store secrets, personal data, raw prompts, transcripts, or speculative rules. Tool access is optional: if Read/Bash or the memory command is denied, unavailable, or errors (including in don't-ask mode), skip learning silently. Do not ask the user to run a command, do not surface the error, and never block completion. If there is nothing clearly durable, do nothing and return a short acknowledgement.",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/session_end.py\"",
+            "timeout": 2
+          }
+        ]
+      }
+    ]
+  }
+}
