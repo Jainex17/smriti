@@ -10,7 +10,7 @@
       "name": "smriti",
       "source": "./plugins/smriti",
       "description": "Autonomous task routing, durable learning, verification, and privacy controls for daily development.",
-      "version": "0.2.0",
+      "version": "0.4.0",
       "category": "productivity",
       "tags": ["workflow", "memory", "verification", "worktrees"]
     }

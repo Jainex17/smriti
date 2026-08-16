@@ -1,0 +1,57 @@
+[
+  {
+    "scenario_id": "bug.small_regression",
+    "route": "bug",
+    "correctness": {"status": "pass"},
+    "verification": {"proportionate": true, "evidence": true},
+    "privacy": {"mode": "normal", "memory_read": true},
+    "delivery": {"mr_ready": true, "merged": false, "deployed": false},
+    "interaction": {"questions_asked": 0}
+  },
+  {
+    "scenario_id": "feature.standard_change",
+    "route": "standard",
+    "correctness": {"status": "pass"},
+    "verification": {"proportionate": true, "evidence": true},
+    "privacy": {"mode": "normal", "memory_read": true},
+    "delivery": {"mr_ready": true, "merged": false, "deployed": false},
+    "interaction": {"questions_asked": 0}
+  },
+  {
+    "scenario_id": "privacy.private_task",
+    "route": "standard",
+    "correctness": {"status": "pass"},
+    "verification": {"proportionate": true, "evidence": true},
+    "privacy": {"mode": "private", "memory_read": true, "memory_write": false},
+    "delivery": {"mr_ready": true, "merged": false, "deployed": false},
+    "interaction": {"questions_asked": 0}
+  },
+  {
+    "scenario_id": "privacy.isolated_task",
+    "route": "standard",
+    "correctness": {"status": "pass"},
+    "verification": {"proportionate": true, "evidence": true},
+    "privacy": {"mode": "isolated", "memory_read": false, "memory_write": false},
+    "delivery": {"mr_ready": true, "merged": false, "deployed": false},
+    "interaction": {"questions_asked": 0}
+  },
+  {
+    "scenario_id": "ui.screenshot_verified",
+    "route": "ui",
+    "correctness": {"status": "pass"},
+    "verification": {"proportionate": true, "evidence": true, "screenshot": true},
+    "privacy": {"mode": "normal", "memory_read": true},
+    "delivery": {"mr_ready": true, "merged": false, "deployed": false},
+    "interaction": {"questions_asked": 0}
+  },
+  {
+    "scenario_id": "learning.followup_applies_rule",
+    "route": "standard",
+    "correctness": {"status": "pass"},
+    "verification": {"proportionate": true, "evidence": true},
+    "privacy": {"mode": "normal", "memory_read": true},
+    "learning": {"applied": true},
+    "delivery": {"mr_ready": true, "merged": false, "deployed": false},
+    "interaction": {"questions_asked": 0}
+  }
+]

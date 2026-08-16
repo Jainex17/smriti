@@ -51,3 +51,14 @@ Verified: <commands/results and artifact path when relevant>
 Assumptions: <only material assumptions, or none>
 Risk: <low/medium/high and why>
 ```
+
+## Evaluation mode
+
+When a task explicitly requests a harness evaluation, use one scenario from
+`smriti_eval.py task-catalog`. Execute the task normally, then create only the
+structured outcome fields required by that scenario and score them with
+`smriti_eval.py task-score`. Derive correctness, verification, privacy, and
+delivery fields from actual tests, screenshots, memory state, and repository
+state; do not self-award a pass without evidence. Never place the task prompt,
+assistant transcript, secrets, or user content in the outcome file or eval
+ledger.

@@ -47,6 +47,31 @@ rule (for example a small bug invariant), or does nothing. It never stores raw t
 secrets. For a session where you explicitly want the full custom director agent, launch
 `claude --agent smriti:harness`; this will show the agent label by design.
 
+## Measure improvement over time
+
+Run the deterministic black-box suite whenever the plugin changes:
+
+```bash
+python3 plugins/smriti/scripts/smriti_eval.py run --fail-on-regression
+python3 plugins/smriti/scripts/smriti_eval.py report
+```
+
+Each contract run appends one historical snapshot to the smriti data directory. The report compares the first and latest scores and identifies case-level regressions and improvements; if the suite version changes, it marks the percentage comparison as unavailable. The ledger stores only case IDs, pass/fail scores, timing, suite version, revision, and timestamps—never prompts, transcripts, or subprocess output.
+
+Measure harness quality from real task outcomes
+
+The harness-quality score evaluates representative task behavior, not just plugin infrastructure:
+
+```bash
+python3 plugins/smriti/scripts/smriti_eval.py task-catalog
+python3 plugins/smriti/scripts/smriti_eval.py task-score \
+  --outcomes plugins/smriti/evals/harness-outcomes.example.json \
+  --fail-below 0.80
+python3 plugins/smriti/scripts/smriti_eval.py task-report
+```
+
+Task outcomes are structured records produced from actual harness runs. The rubric scores routing, correctness, proportionate verification and evidence, privacy, MR-ready delivery, unnecessary questions, and whether approved learning was applied. Scores are weighted partial credit, so a task can be partly successful. [harness-outcomes.example.json](plugins/smriti/evals/harness-outcomes.example.json) is only a schema fixture, not evidence of harness quality: replace its fields with a real task outcome and score it with `--scenario <scenario-id>`. Do not put prompts or transcripts in the outcome file or ledger. The rolling task report compares recent usage with earlier usage, so it becomes a meaningful “previous vs now” quality signal as real outcomes accumulate.
+
 ## Delivery policy
 
 The default is MR-ready: smriti works in an isolated branch/worktree, verifies the result, and returns branch, diff summary, proof, assumptions, and risk. It never creates an MR, merges, deploys, or changes production state unless explicitly authorized in the task or saved repository policy.
