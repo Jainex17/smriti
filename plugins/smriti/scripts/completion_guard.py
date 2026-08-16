@@ -47,7 +47,7 @@ def main() -> int:
     # Read-only status/memory commands can run while a repository has unrelated dirty files.
     # They do not need a code-verification gate.
     last_message = payload.get("last_assistant_message", "").lower()
-    if any(marker in last_message for marker in ("personal dev harness status", "harness status", "cleanup candidates", "memory:", "learned:")):
+    if any(marker in last_message for marker in ("smriti status", "smriti:", "cleanup candidates", "memory:", "learned:")):
         return 0
     cwd = payload.get("cwd")
     if not isinstance(cwd, str) or not cwd:

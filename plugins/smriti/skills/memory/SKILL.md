@@ -1,8 +1,8 @@
 ---
-description: Manage durable harness memory from Claude Code. Use for requests to remember, forget, list, explain, audit, or change personal preferences, repository knowledge, bug invariants, workflow rules, or verification policies.
+description: Manage durable smriti memory from Claude Code. Use for requests to remember, forget, list, explain, audit, or change personal preferences, repository knowledge, bug invariants, workflow rules, or verification policies.
 ---
 
-Manage memory through `harness-memory`; never ask the user to edit JSON or Markdown files.
+Manage memory through `smriti-memory`; never ask the user to edit JSON or Markdown files.
 
 - For an explicit preference, store one short personal rule with `kind=preference`.
 - For a repository fact, scope it to the current repository.

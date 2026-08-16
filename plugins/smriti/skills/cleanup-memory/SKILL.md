@@ -1,11 +1,11 @@
 ---
-description: Clean up stale personal development harness memory. Use when asked to clean, prune, minimize, audit, expire, or review memory, especially after two to three months.
+description: Clean up stale smriti memory. Use when asked to clean, prune, minimize, audit, expire, or review memory, especially after two to three months.
 disable-model-invocation: true
 ---
 
 Run the memory cleanup directly because the user explicitly invoked this command.
 
-1. Run `harness-memory cleanup --days 90 --cwd "$PWD"`.
+1. Run `smriti-memory cleanup --days 90 --cwd "$PWD"`.
 2. Report counts for removed candidates, archived stale active rules, and retained active rules.
 3. Offer a concise list of archived rule IDs/titles only when the user asks for detail.
 

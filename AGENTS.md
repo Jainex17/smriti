@@ -2,16 +2,16 @@
 
 ## What this is
 
-`arya` is a local Claude Code plugin marketplace with one plugin:
-`personal-dev-harness` — autonomous MR-ready task delivery with task routing,
+`smriti` is a local Claude Code plugin marketplace with one plugin:
+`smriti` — autonomous MR-ready task delivery with task routing,
 subagents, durable learning (memory), and privacy controls.
 
 - `.claude-plugin/marketplace.json` — marketplace manifest; its `version` must
-  match `plugins/personal-dev-harness/.claude-plugin/plugin.json` (bump both on
+  match `plugins/smriti/.claude-plugin/plugin.json` (bump both on
   behavior changes).
-- `plugins/personal-dev-harness/` — `agents/`, `skills/`, `hooks/hooks.json`,
-  `bin/harness-memory` (bash wrapper that execs `scripts/harness_memory.py`),
-  and stdlib-only Python `scripts/` (`harness_memory.py` is the state store;
+- `plugins/smriti/` — `agents/`, `skills/`, `hooks/hooks.json`,
+  `bin/smriti-memory` (bash wrapper that execs `scripts/smriti_memory.py`),
+  and stdlib-only Python `scripts/` (`smriti_memory.py` is the state store;
   `session_start.py` etc. are hook entry points).
 - `tests/` — stdlib `unittest` suite.
 
@@ -31,32 +31,34 @@ dir; follow that pattern in new tests.
   On success, hook scripts emit only their hook-protocol JSON
   (`hookSpecificOutput`), never stray diagnostics.
 - Tests pin the Stop-curator prompt in `hooks/hooks.json`: it must contain
-  `harness-memory remember` and `skip learning silently`, and must not contain
+  `smriti-memory remember` and `skip learning silently`, and must not contain
   `bug-invariant`. Rewording that prompt breaks the suite.
 - Memory stores compact rules only (never transcripts, secrets, raw prompts).
-  Canonical API: `harness-memory remember --scope <personal|repo> --kind
+  Canonical API: `smriti-memory remember --scope <personal|repo> --kind
   <preference|repo-fact|bug-pattern|verification|workflow|decision> --rule
   <text>`. Legacy aliases (`add --type bug-invariant --text`) are accepted and
   normalized to canonical kinds — keep them working; a test asserts it.
-- Running `harness_memory.py` without `CLAUDE_PLUGIN_DATA` writes to the
-  real fallback `~/.claude/plugins/data/personal-dev-harness-dev` — set it to a
-  temp dir when invoking scripts by hand.
+- Running `smriti_memory.py` without `CLAUDE_PLUGIN_DATA` writes to the
+  real fallback `~/.claude/plugins/data/smriti-dev` — set it to a
+  temp dir when invoking scripts by hand. Pre-rename
+  `personal-dev-harness-dev` data and `harness-memory.json` state
+  migrate automatically on first run.
 - Privacy: `normal` (read+write), `private:` (read-only), `isolated:` (no
   memory read or write).
 - MR-ready by default; never create MRs, merge, deploy, or touch production
   unless explicitly authorized.
-- Keep `plugins/personal-dev-harness/README.md` in sync with user-facing
+- Keep `README.md` in sync with user-facing
   changes.
 
-## Codex automatic harness mode
+## Codex automatic smriti mode
 
-When Codex is working in this workspace, apply the personal development harness
+When Codex is working in this workspace, apply smriti
 automatically for every coding task. Do not require the user to invoke a skill
 or repeat these instructions.
 
 - Silently classify the task as answer, quick, standard, bug, UI, or complex/risky.
 - For development work, read relevant approved memory with
-  `python3 plugins/personal-dev-harness/scripts/harness_memory.py context` and
+  `python3 plugins/smriti/scripts/smriti_memory.py context` and
   use the current task as the query. Do not read raw transcripts.
 - Use the smallest reliable workflow, verify proportionally, and report the
   verification result. UI work needs screenshot or browser evidence when the

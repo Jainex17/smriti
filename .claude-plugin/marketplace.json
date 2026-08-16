@@ -1,16 +1,16 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
-  "name": "personal-dev-harness",
+  "name": "smriti-plugins",
   "owner": {
     "name": "Jainex"
   },
   "description": "Personal Claude Code workflow plugins.",
   "plugins": [
     {
-      "name": "personal-dev-harness",
-      "source": "./plugins/personal-dev-harness",
+      "name": "smriti",
+      "source": "./plugins/smriti",
       "description": "Autonomous task routing, durable learning, verification, and privacy controls for daily development.",
-      "version": "0.1.5",
+      "version": "0.2.0",
       "category": "productivity",
       "tags": ["workflow", "memory", "verification", "worktrees"]
     }

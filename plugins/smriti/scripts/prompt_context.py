@@ -13,7 +13,7 @@ from pathlib import Path
 
 def run_memory(*args: str) -> str:
     root = os.environ.get("CLAUDE_PLUGIN_ROOT") or str(Path(__file__).resolve().parents[1])
-    command = ["python3", os.path.join(root, "scripts", "harness_memory.py"), *args]
+    command = ["python3", os.path.join(root, "scripts", "smriti_memory.py"), *args]
     return subprocess.check_output(command, text=True, env=os.environ.copy()).strip()
 
 
