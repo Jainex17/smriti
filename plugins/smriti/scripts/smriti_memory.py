@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Small local state store for personal-dev-harness.
+"""Small local state store for smriti.
 
 The store intentionally contains compact, reviewable rules rather than raw transcripts.
 """
@@ -51,25 +51,43 @@ def parse_time(value: str | None) -> datetime | None:
         return None
 
 
+LEGACY_DATA_DIR_NAME = "personal-dev-harness-dev"
+
+
 def data_dir() -> Path:
     raw = os.environ.get("CLAUDE_PLUGIN_DATA")
     if raw:
         root = Path(raw)
     else:
-        root = Path.home() / ".claude" / "plugins" / "data" / "personal-dev-harness-dev"
+        base = Path.home() / ".claude" / "plugins" / "data"
+        root = base / "smriti-dev"
+        legacy = base / LEGACY_DATA_DIR_NAME
+        if legacy.is_dir() and not root.exists():
+            # Carry over durable learning written before the plugin was renamed.
+            try:
+                os.rename(legacy, root)
+            except OSError:
+                root = legacy
     try:
         root.mkdir(parents=True, exist_ok=True)
         return root
     except OSError:
         # A hook must never block the development task when plugin state is unavailable.
         # The fallback is ephemeral and should not be treated as durable learning.
-        fallback = Path(tempfile.gettempdir()) / "personal-dev-harness-runtime"
+        fallback = Path(tempfile.gettempdir()) / "smriti-runtime"
         fallback.mkdir(parents=True, exist_ok=True)
         return fallback
 
 
 def state_path() -> Path:
-    return data_dir() / "harness-memory.json"
+    path = data_dir() / "smriti-memory.json"
+    legacy = path.with_name("harness-memory.json")
+    if legacy.exists() and not path.exists():
+        try:
+            os.rename(legacy, path)
+        except OSError:
+            return legacy
+    return path
 
 
 def empty_state() -> dict[str, Any]:
@@ -99,7 +117,7 @@ def locked_state(write: bool = False):
                 state = empty_state()
             yield state
             if write:
-                fd, tmp_name = tempfile.mkstemp(prefix="harness-memory-", suffix=".json", dir=path.parent)
+                fd, tmp_name = tempfile.mkstemp(prefix="smriti-memory-", suffix=".json", dir=path.parent)
                 try:
                     with os.fdopen(fd, "w", encoding="utf-8") as handle:
                         json.dump(state, handle, indent=2, sort_keys=True)
@@ -203,14 +221,14 @@ def command_context(args: argparse.Namespace) -> int:
         mode = session.get("mode", state.get("profile", {}).get("privacy_default", "normal"))
         quarantined = session.get("quarantined", False)
         if mode == "isolated":
-            print("Harness mode: isolated. Do not retrieve or write harness memory for this session.")
+            print("Smriti mode: isolated. Do not retrieve or write smriti memory for this session.")
             return 0
         memories = scored_memories(state, args.cwd, args.query or "", args.limit)
         if not args.query:
             memories = baseline_memories(state, args.cwd, args.limit)
-        lines = [f"Harness mode: {mode}{' (quarantined)' if quarantined else ''}."]
+        lines = [f"Smriti mode: {mode}{' (quarantined)' if quarantined else ''}."]
         if mode == "private" or quarantined:
-            lines.append("Do not write harness learning, retain artifacts, or send cross-session messages.")
+            lines.append("Do not write smriti learning, retain artifacts, or send cross-session messages.")
         if memories:
             lines.append("Relevant approved memory:")
             for memory in memories:
@@ -235,7 +253,7 @@ def command_session_start(args: argparse.Namespace) -> int:
             "started_at": existing.get("started_at", now()),
             "updated_at": now(),
         }
-        print(f"Harness session initialized in {mode} mode.")
+        print(f"Smriti session initialized in {mode} mode.")
     return 0
 
 
@@ -470,11 +488,11 @@ def command_status(args: argparse.Namespace) -> int:
             recent = memory["recent_active"][:3]
             recent_text = "; ".join(f"{item['kind']}: {item['title']}" for item in recent) or "none yet"
             cleanup_text = f"{memory['cleanup_candidates']} due" if memory["cleanup_candidates"] else "none due"
-            print(f"Harness: {memory['active']} active, {memory['candidate']} candidates, {memory['archived']} archived | {scope_text} | mode={current['mode']}")
+            print(f"Smriti: {memory['active']} active, {memory['candidate']} candidates, {memory['archived']} archived | {scope_text} | mode={current['mode']}")
             print(f"Learned: {recent_text}")
             print(f"Kinds: {kind_text} | sessions: {sessions_result['total']} saved ({current_session}) | cleanup: {cleanup_text} ({args.days}d)")
             return 0
-        print("Personal Dev Harness status")
+        print("Smriti status")
         print(f"Repo: {args.cwd} ({'configured' if result['current_repo_configured'] else 'not configured'})")
         print(f"Session: {str(current['id'])[:12] if current['id'] else 'unknown'} | mode={current['mode']}{' | quarantined' if current['quarantined'] else ''}")
         print(f"Privacy default: {result['privacy_default']}")
@@ -491,12 +509,12 @@ def command_status(args: argparse.Namespace) -> int:
                 print(f"  - {item['id']} [{item['scope']}/{item['kind']}/{item['confidence']}] {item['title']}")
                 print(f"    {item['rule']}")
         if memory["cleanup_candidates"]:
-            print(f"Run /personal-dev-harness:cleanup-memory to prune stale data.")
+            print(f"Run /smriti:cleanup-memory to prune stale data.")
     return 0
 
 
 def parser() -> argparse.ArgumentParser:
-    root = argparse.ArgumentParser(description="Local memory store for personal-dev-harness")
+    root = argparse.ArgumentParser(description="Local memory store for smriti")
     sub = root.add_subparsers(dest="command", required=True)
 
     def cwd_flags(command: argparse.ArgumentParser) -> None:
