@@ -42,9 +42,11 @@ private and isolated sessions never write or clean smriti memory.
 
 For sensitive work, prefix the task with `private:` (no new learning) or `isolated:` (no memory read or write). Run `/smriti:cleanup-memory` every 2–3 months to remove stale candidate memory and archive unused low-confidence rules.
 
-After verified normal work, a silent curator reviews only the outcome for one conservative durable
-rule (for example a small bug invariant), or does nothing. It never stores raw transcripts or
-secrets. For a session where you explicitly want the full custom director agent, launch
+After verified normal work, an advisory silent curator reviews only the outcome for one conservative
+durable rule (for example a small bug invariant), or does nothing. Learning is best-effort and the
+curator never blocks Claude from stopping, even when memory tools are unavailable or a learning
+attempt is malformed. It never stores raw transcripts or secrets. For a session where you explicitly
+want the full custom director agent, launch
 `claude --agent smriti:harness`; this will show the agent label by design.
 
 ## Measure improvement over time

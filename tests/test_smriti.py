@@ -55,6 +55,10 @@ class SmritiMemoryTests(unittest.TestCase):
         prompt = hooks["hooks"]["Stop"][1]["hooks"][0]["prompt"]
         self.assertIn("smriti-memory remember", prompt)
         self.assertIn("skip learning silently", prompt)
+        self.assertIn("advisory post-stop learning curator", prompt)
+        self.assertIn("stop_hook_active", prompt)
+        self.assertIn('never return ok:false', prompt)
+        self.assertIn('{"ok":true', prompt)
         self.assertNotIn("bug-invariant", prompt)
 
     def test_legacy_state_file_migrates_on_first_run(self) -> None:
