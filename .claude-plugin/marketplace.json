@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "personal-dev-harness",
+  "owner": {
+    "name": "Jainex"
+  },
+  "description": "Personal Claude Code workflow plugins.",
+  "plugins": [
+    {
+      "name": "personal-dev-harness",
+      "source": "./plugins/personal-dev-harness",
+      "description": "Autonomous task routing, durable learning, verification, and privacy controls for daily development.",
+      "version": "0.1.5",
+      "category": "productivity",
+      "tags": ["workflow", "memory", "verification", "worktrees"]
+    }
+  ]
+}
