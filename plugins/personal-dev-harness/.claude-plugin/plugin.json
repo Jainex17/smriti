@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "personal-dev-harness",
+  "description": "Runs development tasks autonomously, learns durable preferences and bug invariants, and enforces proportionate verification.",
+  "version": "0.1.5",
+  "author": {
+    "name": "Jainex"
+  }
+}
